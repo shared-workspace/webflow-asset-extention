@@ -1,0 +1,29 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "BUILD_ENV=production nuxt build",
+    "build:watch": "concurrently -k \"webflow extension serve\" \"nodemon --watch ./src --ext ts,vue --exec 'yarn build'\"",
+    "dev": "NODE_ENV=development nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "ext:dev": "concurrently -k \"npm run dev\" \"npm run build\""
+  },
+  "dependencies": {
+    "nuxt": "^3.13.0",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
+    "@webflow/designer-extension-typings": "^2.0.2",
+    "axios": "^1.7.7",
+    "concurrently": "^9.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.1.7",
+    "openai": "^4.66.1",
+    "webflow-api": "^2.4.0"
+  }
+}

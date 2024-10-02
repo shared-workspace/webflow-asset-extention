@@ -1,1 +1,0 @@
-# webflow-asset-extention
