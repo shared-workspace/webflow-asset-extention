@@ -1,5 +1,5 @@
 import { WebflowClient } from "webflow-api";
-import db from "@/utils/database";
+// import db from "@/utils/database";
 
 export default defineEventHandler(async (event) => {
   const code = getQuery(event).code as string;
@@ -19,5 +19,5 @@ export default defineEventHandler(async (event) => {
   (user as any).accessToken = accessToken; // add access token to user object
 
   // Save User Details to DB
-  db.insertAuthorization(user);
+  // db.insertAuthorization(user);
 });
