@@ -1,18 +1,9 @@
-
 <script lang="ts" setup>
-import { ref } from 'vue';
-
-const AssetsList = ref<string[]>([]);
-const getAssetsList = async () => {
-  const assets = await webflow.getAllAssets();
-  for (const { id } of assets) {
-    const asset = await webflow.getAssetById(id);
-    if (asset) {
-      // Get the URL of the asset
-      const url = await asset.getUrl();
-      AssetsList.value.push(url);
-    }
-  }
+import '~/reset.css';
+import AssetWrapper from '@/components/AssetWrapper.vue';
+const assetsGetFlag = ref(true);
+const getAssetsList = () => {
+  assetsGetFlag.value = !assetsGetFlag.value;
 };
 </script>
 <template>
@@ -22,14 +13,8 @@ const getAssetsList = async () => {
         Get List of Assets
       </button>
     </div>
-    <div v-if="AssetsList.length">
-      <h2>Assets List</h2>
-      <ul>
-        <li v-for="(asset, index) in AssetsList" :key="index">
-          <img :src="asset" alt="Asset"  width="100" height="100" />
-        </li>
-      </ul>
-    </div>
+    <h2>Assets List</h2>
+    <AssetWrapper v-if="assetsGetFlag" />
   </div>
 </template>
 <style scoped>
@@ -42,12 +27,13 @@ const getAssetsList = async () => {
 .wrapper {
   height: 100vh;
   font-family: Arial, sans-serif;
+  padding: 1rem .5rem;
 }
 
 .button-wrapper {
   background: #000;
   display: flex;
-  height: 40%;
+  padding: 1rem 0;
 }
 
 button {
@@ -65,14 +51,6 @@ h2 {
   font-size: 1rem;
   color: white;
   margin: 1rem 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
 }
 
 </style>

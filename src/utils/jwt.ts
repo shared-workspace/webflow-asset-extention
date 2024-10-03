@@ -8,7 +8,7 @@ export default {
     },
 
     async authenticateToken(event: H3Event) {
-        const authHeader = getHeader(event, "authorization");
+        const authHeader = getHeader(event, "Authorization");
         if (!authHeader) {
             throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
         }
