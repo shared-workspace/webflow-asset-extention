@@ -1,30 +1,49 @@
 <script lang="ts" setup>
 import Image from './Image.vue';
 import InputWrapper from './InputWrapper.vue';
-import { ref } from 'vue';
 
-const AssetsData = ref<Map<string, { url: string, name: string, altText: string, isLoaded: boolean }>>(new Map());
-const Webflow = typeof webflow !== 'undefined' ? webflow : useNuxtApp().$webflow;
+const props = defineProps<{
+    Webflow: WebflowApi
+    assetsData: AssetDataMap,
+    assetsSelected: AssetDataMap,
+    assetsGetFlag: boolean,
+    maxSelectionAllowed: number
+}>();
+
+const { 
+    Webflow, 
+    assetsSelected,
+    assetsData,
+    maxSelectionAllowed
+} = props;
+
+// const emit = defineEmits(['assetDataUpdate']);
+// const assetsData = computed({
+//     get: () => props.assetsData,
+//     set: () => emit("assetDataUpdate")
+// })
+
 const isAssetLoaded = (id: string) => {
-    const asset = AssetsData.value.get(id);
+    const asset = assetsData.get(id);
     if (asset && !asset.isLoaded && asset.url !== '' && asset.name !== '' && asset.altText !== '') {
-        AssetsData.value.set(id, { ...asset, isLoaded: true });
+        asset.isLoaded = true;
+        assetsData.set(id, asset);
     }
 }
 const generateAltText = (id: string, url: string) => {
     useExternalFetch("/api/alt-text", { params: { url } }).then((altText) => {
-        const oldAsset = AssetsData.value.get(id);
+        const oldAsset = assetsData.get(id);
         if (oldAsset) {
-            AssetsData.value.set(id, { ...oldAsset, altText: altText ?? '' });
+            assetsData.set(id, { ...oldAsset, altText: altText ?? '' });
             isAssetLoaded(id);
         }
     });
 }
 const fetchAssetName = (id: string, asset: Asset) => {
     asset.getName().then((name) => {
-        const oldAsset = AssetsData.value.get(id);
+        const oldAsset = assetsData.get(id);
         if (oldAsset) {
-            AssetsData.value.set(id, { ...oldAsset, name });
+            assetsData.set(id, { ...oldAsset, name });
             isAssetLoaded(id);
         }
     });
@@ -41,24 +60,40 @@ const fetchAssetUrl = (id: string, asset: Asset) => {
         if (!isValidImageUrl(url)) return;
         // generateAltText(id, url);
         // fetchAssetName(id, asset);
-        AssetsData.value.set(asset.id, { url, name: '', altText: '', isLoaded: true });
+        assetsData.set(asset.id, { url, name: '', altText: '', isLoaded: true });
     });
 }
+const max = 5;
 const fetchAssetsWithAltText = async () => {
     Webflow.getAllAssets().then(async (assets) => {
-        assets.forEach((asset) => {
+        assets.forEach((asset, i) => {
+            if (i >= max) return;
             fetchAssetUrl(asset.id, asset);
         });
     });
 }
 onMounted(() => {
+    // webflow.setExtensionSize('comfortable');
     fetchAssetsWithAltText();
 });
+
+const toggleFromSelectedList = (id: string) => {
+    if (assetsSelected.has(id)) {
+        assetsSelected.delete(id);
+    } else {
+        if (assetsSelected.size >= maxSelectionAllowed - 1) return;
+        console.log("size: ", assetsSelected.size, "<", maxSelectionAllowed - 1);
+        const asset = assetsData.get(id);
+        if (!asset) return;
+        assetsSelected.set(id, asset);
+    }
+}
+
 </script>
 <template>
-    <ul v-if="AssetsData.size">
-        <li v-for="([id, { url, name, altText }]) in AssetsData" :key="id">
-            <Image :url="url" :id="id" />
+    <ul v-if="assetsData.size">
+        <li v-for="([id, { url, name, altText }]) in assetsData" :key="id">
+            <Image :url="url" :id="id" :toggle="() => toggleFromSelectedList(id)" :isSelectd="assetsSelected.has(id)" />
             <InputWrapper :name="name" :altText="altText" />
         </li>
     </ul>
@@ -70,6 +105,23 @@ ul {
     margin: 0;
     height: 100%;
     overflow-y: auto;
+    
+}
+
+/* For WebKit browsers */
+ul::-webkit-scrollbar {
+    width: 8px; /* Adjust the width as needed */
+}
+
+ul::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 10px;
+}
+
+/* For Firefox */
+ul {
+    scrollbar-width: thin;
+    scrollbar-color: darkgrey transparent;
 }
 
 ul li {

@@ -45,6 +45,14 @@ class DummyAsset implements Webflow.Asset {
       })
     })
   }
+  async getName(){
+    const res = useFetch(`/api/webflow/getName?id=${this.id}`)
+    return new Promise<typeof res.data.value>((resolve) => {
+      res.then((name) => {
+        resolve(name.data?.value)
+      })
+    })
+  }
 }
 export default defineNuxtPlugin(function () {
   console.log('Dummy Webflow provider plugin loaded');

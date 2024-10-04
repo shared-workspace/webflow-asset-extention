@@ -1,12 +1,15 @@
 
+const isDev = process.env.NODE_ENV === 'development'
 // Create a custom fetch instance
 export const useExternalFetch = $fetch.create({
-  baseURL: "https://automatic-lamp-rvjxqqgp4r9f56w4-3000.app.github.dev",
-  headers: {
-    'Access-Control-Allow-Origin': "*",
-    'Access-Control-Allow-Methods': 'GET',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  },
+  ...(!isDev ? {
+    baseURL: "https://3000-sharedworks-webflowasse-r8pcyskepul.ws-us116.gitpod.io",
+    headers: {
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    }
+  } : {}),
   // Define the onRequest interceptor to add headers
   async onRequest({ options }) {
     if (typeof window !== 'undefined') {

@@ -1,10 +1,8 @@
 import OpenAI from "openai";
-const openai = new OpenAI(
-    {apiKey: "sk-proj-AlvVpoYqbnQRb0NFduEAT3BlbkFJBR7Cz9datw34LMWv8o1W"}
-);
+const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
 export default defineEventHandler(async (event) => {
-    const url = getQuery(event).url as string;
+    const src = getQuery(event).src as string;
     try {
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
@@ -16,7 +14,7 @@ export default defineEventHandler(async (event) => {
                             type: "text",
                             text: "In 10 words or less, tell me what's in this image.",
                         },
-                        { type: "image_url", image_url: { url, detail: "low" } },
+                        { type: "image_url", image_url: { url: src, detail: "low" } },
                     ],
                 },
             ],
@@ -24,7 +22,7 @@ export default defineEventHandler(async (event) => {
         });
         return completion.choices[0].message.content;
     } catch (error) {
-        console.error(`Error processing image at URL ${url}:`, error);
+        console.error(`Error processing image at URL ${src}:`, error);
         return null;
     }
 });

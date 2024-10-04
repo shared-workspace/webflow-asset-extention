@@ -1,12 +1,5 @@
 import * as fs from 'fs';
 
-// Define the interface for the data
-interface ImageData {
-  id: string;
-  url: string;
-  altText: string;
-}
-
 // Generic JsonDatabase class
 class JsonDatabase<T> {
   private filePath: string;
@@ -61,4 +54,5 @@ class JsonDatabase<T> {
   }
 }
 
-export const db = new JsonDatabase<ImageData>("/workspaces/webflow-asset-extention/data.json");
+export const db = new JsonDatabase<AssetData & {id: string}>("data.json");
+db.update

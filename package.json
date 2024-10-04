@@ -3,13 +3,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "BUILD_ENV=production nuxt build",
-    "build:watch": "concurrently -k \"webflow extension serve\" \"nodemon --watch ./src --ext ts,vue --exec 'yarn build'\"",
-    "dev": "NODE_ENV=development nuxt dev",
+    "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "ext:dev": "concurrently -k \"npm run dev\" \"npm run build\""
+    
+    "dev": "NODE_ENV=development nuxt dev",
+    "ext:server": "SERVER_DEV=true nuxt dev",
+    "ext:client": "WEBFLOW_BUILD=true yarn generate",
+    "ext:client-dev": "nodemon --watch ./src --ext ts,vue --exec 'yarn ext:client'",
+    "ext:dev": "concurrently -k \"yarn ext:server\" \"yarn ext:client-dev\"",
+    "ext:webflow": "webflow extension serve"
   },
   "dependencies": {
     "nuxt": "^3.13.0",

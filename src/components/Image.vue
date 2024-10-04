@@ -1,21 +1,23 @@
-<script lang="ts">
-export default {
-    name: 'Image',
-    props: {
-        url: {
-            type: String,
-            required: true
-        },
-        id: {
-            type: String,
-            required: true
-        }
+<script setup lang="ts">
+const props = defineProps<{
+    url: string,
+    id: string,
+    toggle: () => void,
+    isSelectd: boolean
+}>();
+// watch isSelectd
+console.log("isSelectd: ", props.isSelectd);
+watch(() => props.isSelectd, (newValue) => {
+    console.log("isSelectd: ", newValue);
+    if (newValue !== props.isSelectd) {
+        props.toggle();
     }
-}
+})
+
 </script>
 <template>
     <div class="image-wrapper">
-        <input type="checkbox" style="display: none;" :name="id" />
+        <input type="checkbox" :id="id" :checked="isSelectd" />
         <label class="image-wrapper" :for="id">
             <img :src="url" />
         </label>
@@ -25,23 +27,33 @@ export default {
 
 <style scoped>
 .image-wrapper {
-  height: 100%;
-  /* Set the height */
-  width: auto;
-  /* Width will automatically adjust to match the height */
-  aspect-ratio: 1 / 1;
-  /* Maintain a 1:1 aspect ratio */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 4px;
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.image-wrapper input {
+    display: none;
 }
 
 img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  /* Ensure the image covers the container */
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+
+input:checked~label {
+    background-color: rgb(69, 69, 240);
+}
+
+input:checked~label img {
+    transform: scale(0.9);
 }
 </style>
