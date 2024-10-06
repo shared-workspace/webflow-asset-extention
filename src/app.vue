@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const Webflow = typeof webflow !== 'undefined' ? webflow : useNuxtApp().$webflow;
 const { getAllAssets, assetMap, totalAssets, syncAssets, updateAssetAltText } = useAssetMap();
-const { selectAll, deselectAll, isLimitReached, isNoneSelected, isAssetSelected, toggleAssetInSelectedMap, assetsSelectedMap, totalAssetsSelected, saveSelectedAssets, generateAltTextForSelected } = useAssetSelectedMap({limit: 5});
+const { selectAll, deselectAll, isLimitReached, isNoneSelected, isAssetSelected, toggleAssetInSelectedMap, assetsSelectedMap, totalAssetsSelected, saveSelectedAssets, generateAltTextForSelected } = useAssetSelectedMap({limit: 200});
 onMounted(() => {
   console.log('Component mounted')
   getAllAssets(Webflow, {
@@ -52,11 +52,13 @@ const handleInputChange = (id: string, value: string) => {
 <template>
   <main>
     <div class="top-bar">
-      <button @click="selectAll" :disabled="limitReached">
-        Select All
-      </button>
-      <button @click="deselectAll" :disabled="isNoneSelected()">
-        Deselect All</button>
+      <div class="top-bar-button-wrapper">
+        <button @click="selectAll" :disabled="limitReached">
+          Select All
+        </button>
+        <button @click="deselectAll" :disabled="isNoneSelected()">
+          Deselect All</button>
+      </div>
       <select>
         <option value="0">Asset Library</option>
         <option value="66fb750c333d4f968c584dc4">Projects</option>
@@ -67,9 +69,6 @@ const handleInputChange = (id: string, value: string) => {
         <option value="66fb750c333d4f968c584dc9">Products</option>
         <option value="66fb750c333d4f968c584dca">SKUs</option>
       </select>
-
-      <button>Creadit</button>
-      <button>Buy Creadit</button>
     </div>
     <div class="asset-list">
       <ul>
@@ -137,6 +136,11 @@ main {
   margin: 0 1rem;
   font-weight: bold;
 }
+.top-bar-button-wrapper{
+  display:flex;
+  gap: 8px;
+
+}
 button {
   padding: 4px 8px;
   background-color: var(--backgroundActive);
@@ -178,7 +182,7 @@ option {
 
 .top-bar {
   height: var(--top-bar-height);
-  padding: 0 var(--padding-regular);
+  padding: 8px var(--padding-regular);
   background-color: var(--background1);
   border-bottom: 1px solid var(--border1);
   display: flex;
@@ -274,12 +278,10 @@ input {
   /* Ensure padding and border are included in the element's total width and height */
   font-size: 0.8rem;
 }
-
 input.asset-name {
   height: 2rem;
   margin-bottom: 1rem;
 }
-
 input.asset-alt-text {
   flex-grow: 1;
 }

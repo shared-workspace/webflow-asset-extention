@@ -3,7 +3,7 @@ const isDev = process.env.NODE_ENV === 'development'
 // Create a custom fetch instance
 export const useExternalFetch = $fetch.create({
   ...(!isDev ? {
-    baseURL: "https://3000-sharedworks-webflowasse-r8pcyskepul.ws-us116.gitpod.io",
+    baseURL: "https://bug-free-space-chainsaw-67q7p6rxqw724jwj-3000.app.github.dev/",
     headers: {
       'Access-Control-Allow-Origin': "*",
       'Access-Control-Allow-Methods': 'GET',
