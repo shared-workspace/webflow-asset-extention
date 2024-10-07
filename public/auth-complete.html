@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Complete</title>
+</head>
+<body>
+  <p>Authentication successful! You can now close this window.</p>
+  <script>
+    // Check if the window was opened by another window (e.g., the main app)
+    if (window.opener) {
+      // Notify the parent window that authentication is complete
+      window.opener.postMessage('auth-complete', 'https://3000-sharedworks-webflowasse-po1abmzkdzh.ws-us116.gitpod.io');
+      // Optionally, close this window after sending the message
+      window.close();
+    }
+  </script>
+</body>
+</html>

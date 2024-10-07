@@ -7,11 +7,19 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "ext:build": "nodemon --watch src --ext ts,vue --exec \"npm run build\""
   },
   "dependencies": {
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@types/simple-oauth2": "^5.0.7",
+    "level": "^8.0.1",
+    "nodemon": "^3.1.7",
+    "simple-oauth2": "^5.1.0",
+    "webflow-api": "^2.4.2"
   }
 }
