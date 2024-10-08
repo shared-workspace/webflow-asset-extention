@@ -1,5 +1,7 @@
+import { computed, ref } from "vue";
+import { $api } from "../utils/api";
 
-const max = 2;
+// const max = 2;
 const assetMap = ref<AssetMap>(new Map());
 const WebflowRef = ref<WebflowApi | null>(null);
 const limitFetch = ref(0);
@@ -32,7 +34,7 @@ function getOtherValues(id: string, src: string, asset: Asset, j = 0, generateAl
 
     // Limit the number of alt text generated
     if (generateAltText && j++ < maxAltText) {
-        useNuxtApp().$api<string>("/api/alt-text", { query: { src } }).then((alt) => alt && updateAsset('alt', alt));
+        $api<string>("/api/alt-text?src=" + src).then(({ data }) => data && typeof data === "string" && updateAsset('alt', data));
     } else  // get asset name if alt text is not generated
         asset.getAltText().then((alt) => alt && updateAsset('alt', alt));
 }
@@ -83,9 +85,9 @@ export function useAssetMap() {
         assetMap,
         getAllAssets,
         syncAssets,
-        saveAssetData, 
+        saveAssetData,
         generateAltText: (id: string, asset: AssetData) => {
-            if (asset.src !== '') useNuxtApp().$api<string>("/api/alt-text", { query: { src: asset.src } }).then((alt) => alt && assetMap.value.set(id, { ...asset, alt }));
+            if (asset.src !== '') $api<string>("/api/alt-text?src=" + asset.src).then(({ data }) => data && typeof data === "string" && assetMap.value.set(id, { ...asset, alt: data }));
         },
         updateAssetAltText,
         totalAssets: computed(() => assetMap.value.size)

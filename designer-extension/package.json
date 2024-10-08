@@ -1,24 +1,26 @@
 {
-  "name": "nuxt-app",
+  "name": "designer-extension-new",
   "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "ext:dev": "nodemon --watch src --ext ts,vue --exec \"npm run generate && npm run ext:serve\"",
-    "ext:serve": "webflow extension serve"
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "ext:dev": "nodemon --watch src --ext ts,vue --exec 'npm run build && webflow extension serve'",
+    "ext:bundle": "webflow extension bundle"
   },
   "dependencies": {
-    "nuxt": "^3.13.0",
-    "vue": "latest",
-    "vue-router": "latest"
+    "vue": "^3.5.10"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
     "@webflow/designer-extension-typings": "^2.0.2",
     "@webflow/webflow-cli": "^1.6.12",
-    "nodemon": "^3.1.7"
+    "axios": "^1.7.7",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.8",
+    "vue-tsc": "^2.1.6"
   }
 }

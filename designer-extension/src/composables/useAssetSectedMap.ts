@@ -1,3 +1,5 @@
+import { ref, computed } from "vue";
+import { useAssetMap } from "./useAssetMap";
 
 const { assetMap, saveAssetData, generateAltText } = useAssetMap();
 const maxSelectAllowed = ref(0);
@@ -16,7 +18,7 @@ function toggleAssetInSelectedMap(id: string, deselectSkip = false) {
 }
 
 function selectAll() {
-    for (const [id, asset] of assetMap.value) {
+    for (const [id, _asset] of assetMap.value) {
         if (toggleAssetInSelectedMap(id, true)) break;
     }
 }
