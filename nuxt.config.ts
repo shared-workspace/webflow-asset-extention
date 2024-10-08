@@ -8,7 +8,7 @@ const isExtBuild = process.env.EXT_BUILD === 'true'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
-  devtools: { enabled: false },
+  devtools: { enabled: true },
 
   ...(isExtBuild ? extConfig : {
     runtimeConfig: {
