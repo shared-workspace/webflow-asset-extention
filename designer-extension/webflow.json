@@ -1,0 +1,6 @@
+{
+  "name": "webflow",
+  "publicDir": ".output/public",
+  "apiVersion": "2",
+  "size": "large"
+}
