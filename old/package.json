@@ -8,7 +8,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "ext:build": "nodemon --watch src --ext ts,vue --exec \"npm run build\""
+    "ext:build": "EXT=true nuxt generate",
+    "ext:dev": "EXT=true nodemon --watch src --ext ts,vue --exec \"npm run ext:build && npm run ext:serve\"",
+    "ext:serve": "webflow extension serve"
   },
   "dependencies": {
     "nuxt": "^3.13.0",
@@ -16,10 +18,10 @@
     "vue-router": "latest"
   },
   "devDependencies": {
-    "@types/simple-oauth2": "^5.0.7",
-    "level": "^8.0.1",
+    "@webflow/designer-extension-typings": "^2.0.2",
+    "@webflow/webflow-cli": "^1.6.12",
+    "concurrently": "^9.0.1",
     "nodemon": "^3.1.7",
-    "simple-oauth2": "^5.1.0",
-    "webflow-api": "^2.4.2"
+    "openai": "^4.67.2"
   }
 }
