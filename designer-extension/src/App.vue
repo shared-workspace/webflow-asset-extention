@@ -49,10 +49,8 @@ onMounted(() => {
     <div class="spinner"></div>
   </div>
   <div v-else>
-    <div v-if="isAuth">
-      <Extension :is-auth="isAuth" />
-    </div>
-    <div v-else>
+    <Extension v-if="isAuth" :is-auth="isAuth" />
+    <div v-else class="login-screen"> 
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" v-model="password" />
       <button @click="createSession">Login</button>
@@ -90,7 +88,6 @@ main {
 }
 </style>
 <style scoped>
-
 .loading-screen {
   position: fixed;
   top: 0;
@@ -122,5 +119,21 @@ main {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.login-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-screen input {
+  padding: 8px;
+  margin: 8px;
+  border: 1px solid var(--border1);
+  background: var(--background1);
+  color: white;
 }
 </style>
