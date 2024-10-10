@@ -232,6 +232,7 @@ export default function webflowServe(options: Options): Plugin {
             const webflowHTML = await getWebflowHTML(options);
             if (webflowHTML) {
                 saveCache({ webflowHTML });
+                console.log(webflowHTML);
                 return webflowHTML;
             }
             return html;
