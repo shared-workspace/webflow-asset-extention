@@ -34,8 +34,8 @@ export function useAssetSelectedMap({ limit = 1 } = {}) {
         isLimitReached: () => (assetsSelectedMap.value.size >= maxSelectAllowed.value), // check if limit reached
         isAssetSelected: (id: string) => assetsSelectedMap.value.has(id), // check if asset is selected
         isNoneSelected: () => !assetsSelectedMap.value.size, // check if no asset is selected
-        saveSelectedAssets: () => assetsSelectedMap.value.forEach((value, key) => saveAssetData(key, value.alt)), // save selected assets data
-        generateAltTextForSelected: () => assetsSelectedMap.value.forEach((value, key) => generateAltText(key, value)), // generate alt text for selected assets
+        saveSelectedAssets: () => assetsSelectedMap.value.forEach((value, key) => saveAssetData(key, value.alt, assetsSelectedMap.value)), // save selected assets data
+        generateAltTextForSelected: () => assetsSelectedMap.value.forEach((value, key) => generateAltText(key, value, assetsSelectedMap.value)), // generate alt text for selected assets
         totalAssetsSelected: computed(() => assetsSelectedMap.value.size) // get total assets selected
     };
 }

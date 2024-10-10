@@ -72,8 +72,12 @@ function syncAssets() {
     getAllAssets(WebflowRef.value!, { sync: true, maxAssetFetch: limitFetch.value });
 }
 
-function saveAssetData(id: string, alt: string) {
-    WebflowRef.value!.getAssetById(id).then((asset) => (asset?.setAltText(alt)))
+function saveAssetData(id: string, alt: string, selectedMap: AssetMap) {
+    WebflowRef.value!.getAssetById(id).then((asset) => {
+        asset?.setAltText(alt).then(() => {
+            selectedMap.delete(id);
+        });
+    })
 }
 
 function updateAssetAltText(id: string, alt: string) {
@@ -86,8 +90,13 @@ export function useAssetMap() {
         getAllAssets,
         syncAssets,
         saveAssetData,
-        generateAltText: (id: string, asset: AssetData) => {
-            if (asset.src !== '') $api<string>("/api/alt-text?src=" + asset.src).then(({ data }) => data && typeof data === "string" && assetMap.value.set(id, { ...asset, alt: data }));
+        generateAltText: (id: string, asset: AssetData, selectedMap: AssetMap) => {
+            if (asset.src !== '') $api<string>("/api/alt-text?src=" + asset.src).then(({ data }) => {
+                if(data && typeof data === "string") {
+                    assetMap.value.set(id, { ...asset, alt: data })
+                    selectedMap.delete(id);
+                }
+            });
         },
         updateAssetAltText,
         totalAssets: computed(() => assetMap.value.size)
